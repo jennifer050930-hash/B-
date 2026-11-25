@@ -93,6 +93,8 @@ python src/run_all.py
 ```
 所有圖表輸出到 `figures/`，數據結果輸出到 `results/`。Google Colab 也可執行（上傳整個資料夾後執行 `!python src/run_all.py`）。
 
+> 圖上的中文使用專案內建字型 `fonts/FGroupCJK-Regular.otf`，在 Windows、Mac、Colab、GitHub Codespaces 都不用另外安裝。若中文變成方框，請確認 `fonts/` 資料夾有一起上傳。
+
 ## 資料夾結構
 
 ```
@@ -104,6 +106,7 @@ python src/run_all.py
 ├── results/            數據結果（CSV / TXT）
 ├── report/             書面報告、簡報
 ├── references/         參考文獻
+├── fonts/              內建中文字型（畫圖用，請一起上傳）
 ├── requirements.txt
 └── README.md
 ```

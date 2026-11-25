@@ -16,15 +16,26 @@ for p in (PROCESSED, FIG, RESULTS):
 RANDOM_STATE = 42
 
 
+FONT_FILE = ROOT / "fonts" / "FGroupCJK-Regular.otf"
+
+
 def setup_font():
-    """設定可顯示繁體中文的字型（Windows: Microsoft JhengHei；Mac: PingFang；Linux/Colab: Noto Sans CJK）。"""
-    candidates = ["Microsoft JhengHei", "PingFang TC", "Heiti TC",
-                  "Noto Sans CJK TC", "Noto Sans CJK JP", "Noto Sans CJK SC", "Arial Unicode MS"]
+    """設定繁體中文字型。
+    優先用專案內建字型 fonts/FGroupCJK-Regular.otf（Noto Sans CJK TC 子集），
+    不論 Windows、Mac、Colab 或 GitHub Codespaces，不用另外安裝就能顯示中文；
+    內建字型沒有的字，再依序找系統字型。
+    """
+    names = []
+    if FONT_FILE.exists():
+        font_manager.fontManager.addfont(str(FONT_FILE))
+        names.append(font_manager.FontProperties(fname=str(FONT_FILE)).get_name())
     installed = {f.name for f in font_manager.fontManager.ttflist}
-    for name in candidates:
-        if name in installed:
-            plt.rcParams["font.sans-serif"] = [name] + plt.rcParams["font.sans-serif"]
-            break
+    names += [n for n in ["Microsoft JhengHei", "PingFang TC", "Heiti TC", "Noto Sans CJK TC",
+                          "Noto Sans TC", "Arial Unicode MS"] if n in installed]
+    if not names:
+        print("警告：找不到中文字型，圖上的中文會變成方框。請確認 fonts/ 資料夾有一起上傳。")
+    plt.rcParams["font.family"] = "sans-serif"
+    plt.rcParams["font.sans-serif"] = names + ["DejaVu Sans"]
     plt.rcParams["axes.unicode_minus"] = False
     plt.rcParams["figure.dpi"] = 110
     plt.rcParams["savefig.dpi"] = 150
